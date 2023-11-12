@@ -1,5 +1,6 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
+#include <mutex>
 
 #include "observer/fragmenter.h"
 #include "observer/defragmenter.h"
@@ -16,9 +17,18 @@ int main() {
     // Create an empty image for reconstruction
     cv::Mat reconstructedImage = cv::Mat(originalImage.rows, originalImage.cols, originalImage.type());
 
+    // Create a boolean variable to indicate when a fragment is ready
+    bool ready = false;
+
+    //Create a mutex to protect the ready variable
+    std::mutex mutex;
+
+    // Shared condition variable
+    std::condition_variable condition_var;
+
     // Create instances of Fragmenter and Defragmenter
-    Fragmenter fragmenter;
-    Defragmenter defragmenter(originalImage.rows, originalImage.cols);
+    Fragmenter fragmenter(ready, mutex, condition_var);
+    Defragmenter defragmenter(originalImage.rows, originalImage.cols, ready, mutex, condition_var);
 
     // Add the defragmenter as an observer to the fragmenter
     fragmenter.addObserver(&defragmenter);
