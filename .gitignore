@@ -30,3 +30,24 @@
 *.exe
 *.out
 *.app
+
+# Media
+*.pdf
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.ico
+*.mov
+*.mp3
+*.mp4
+*.avi
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# VS code
+.vscode
+```
